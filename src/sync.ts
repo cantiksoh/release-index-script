@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -99,6 +99,14 @@ function archiveFolderName(runStamp: string, report: VersionReport, channel: str
   return `${runStamp}__${sanitizeFileSegment(pickReleaseLabelForChannel(report, channel))}`;
 }
 
+async function readUtf8OrNull(filePath: string): Promise<string | null> {
+  try {
+    return await readFile(filePath, "utf8");
+  } catch {
+    return null;
+  }
+}
+
 export async function runSync(
   outDir: string,
   opts?: { continueOnError?: boolean; archive?: boolean },
@@ -116,10 +124,14 @@ export async function runSync(
       const channel = channelFromTargetFile(t.file);
       const payload = payloadForChannel(report, channel);
       const body = `${JSON.stringify(payload, null, 2)}\n`;
+      const prev = await readUtf8OrNull(dest);
+      const changed = prev !== body;
       await mkdir(path.dirname(dest), { recursive: true });
-      await writeFile(dest, body, "utf8");
+      if (changed) {
+        await writeFile(dest, body, "utf8");
+      }
 
-      if (archive) {
+      if (archive && changed) {
         // .../ide/vscode/stable/version.json → .../ide/vscode/old/<stamp>__<rel>/version.json
         const channelDir = path.dirname(dest);
         const productRoot = path.dirname(channelDir);
