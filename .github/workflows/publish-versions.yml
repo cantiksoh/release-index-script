@@ -98,6 +98,12 @@ jobs:
           SYNC_DELAY_MS: "250"
         run: node dist/sync.js --out data-repo --continue-on-error
 
+      - name: Write repository README
+        run: |
+          cp templates/release-index-README.md data-repo/README.md
+          UPDATED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          sed -i "s/{{LAST_UPDATED_UTC}}/${UPDATED_AT}/g" data-repo/README.md
+
       - name: Commit and push
         env:
           TOKEN: ${{ secrets.RELEASE_INDEX_PUSH_TOKEN }}
@@ -106,7 +112,7 @@ jobs:
           cd data-repo
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ide plugins platforms runtimes tools meta
+          git add README.md ide plugins platforms runtimes tools meta
           if git diff --staged --quiet; then
             echo "No changes"
             exit 0
