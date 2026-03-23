@@ -96,6 +96,8 @@ jobs:
       - name: Write version JSON
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_PROXY: ""
+          GITHUB_PROXY: ""
           HTTP_CACHE_DIR: ${{ github.workspace }}/.http-cache
           HTTP_CACHE_TTL_MS: "86400000"
           SYNC_DELAY_MS: "250"
