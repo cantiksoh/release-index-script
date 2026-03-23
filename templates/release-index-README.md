@@ -1,14 +1,12 @@
 # Release Index
 
-[![Sync Status](https://github.com/saiki-mbs/versions-getter/actions/workflows/publish-versions.yml/badge.svg)](https://github.com/saiki-mbs/versions-getter/actions/workflows/publish-versions.yml)
 ![Last Commit](https://img.shields.io/github/last-commit/saiki-mbs/release-index/master)
+![Auto Update](https://img.shields.io/badge/updates-automated-success)
 ![Data](https://img.shields.io/badge/data-JSON-blue)
 
 Machine-readable release snapshots for IDEs, plugins, runtimes, platforms, and tools.
 
 Last updated (UTC): **{{LAST_UPDATED_UTC}}**
-
-Source pipeline: [saiki-mbs/versions-getter](https://github.com/saiki-mbs/versions-getter)
 
 ## Data layout
 
