@@ -96,7 +96,7 @@ jobs:
           HTTP_CACHE_DIR: ${{ github.workspace }}/.http-cache
           HTTP_CACHE_TTL_MS: "86400000"
           SYNC_DELAY_MS: "250"
-        run: node dist/sync.js --out data-repo/versions --continue-on-error
+        run: node dist/sync.js --out data-repo --continue-on-error
 
       - name: Commit and push
         env:
@@ -106,7 +106,7 @@ jobs:
           cd data-repo
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add versions
+          git add ide plugins platforms runtimes tools meta
           if git diff --staged --quiet; then
             echo "No changes"
             exit 0
