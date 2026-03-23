@@ -12,12 +12,18 @@ import {
   parseWindows,
 } from "./providers/eol.js";
 import { fetchGithubReleaseReport, parseWakatimeGithubRef } from "./providers/wakatime.js";
+import { fetchSublimeTextReport, isSublimeTextSlug } from "./providers/sublime.js";
 
 function parseVscodeMarketplaceExtSlug(raw: string): string | null {
   const t = raw.trim();
   const m = t.match(/^vscode-ext[:/](.+)$/i);
   return m ? m[1] : null;
 }
+
+const EDITOR_REPOS = {
+  zed: { owner: "zed-industries", repo: "zed" },
+  neovim: { owner: "neovim", repo: "neovim" },
+} as const;
 
 async function resolveReport(urlOrSlug: string): Promise<VersionReport> {
   if (isCursorSlug(urlOrSlug)) {
@@ -33,6 +39,16 @@ async function resolveReport(urlOrSlug: string): Promise<VersionReport> {
   const vscodeExt = parseVscodeMarketplaceExtSlug(urlOrSlug);
   if (vscodeExt) {
     return fetchVscodeMarketplaceReport(vscodeExt);
+  }
+
+  if (isSublimeTextSlug(urlOrSlug)) {
+    return fetchSublimeTextReport();
+  }
+
+  const t = urlOrSlug.trim().toLowerCase();
+  const repoRef = (EDITOR_REPOS as Record<string, { owner: string; repo: string }>)[t];
+  if (repoRef) {
+    return fetchGithubReleaseReport(repoRef);
   }
 
   const wakatimeRef = parseWakatimeGithubRef(urlOrSlug.trim());

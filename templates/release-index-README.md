@@ -30,6 +30,9 @@ Last updated (UTC): **{{LAST_UPDATED_UTC}}**
 
 - [VS Code stable](./ide/vscode/stable/version.json)
 - [WakaTime VS Code latest](./plugins/vscode/vscode-wakatime/latest/version.json)
+- [Sublime Text latest](./ide/sublime-text/latest/version.json)
+- [Zed latest](./ide/zed/latest/version.json)
+- [Neovim latest](./ide/neovim/latest/version.json)
 - [Go latest](./runtimes/go/latest/version.json)
 - [Linux latest](./platforms/linux/latest/version.json)
 - [Nginx latest](./tools/nginx/latest/version.json)

@@ -36,6 +36,10 @@ export const SYNC_TARGETS: SyncTarget[] = [
   vscodeMarketplaceExt("esbenp.prettier-vscode"),
   vscodeMarketplaceExt("eamodio.gitlens"),
 
+  { slug: "sublime-text", file: "ide/sublime-text/latest/version.json" },
+  { slug: "zed", file: "ide/zed/latest/version.json" },
+  { slug: "neovim", file: "ide/neovim/latest/version.json" },
+
   ...WAKATIME_KNOWN_PLUGINS.map((repo) => wakatimePlugin(repo)),
 
   { slug: "linux", file: "platforms/linux/latest/version.json" },
