@@ -126,12 +126,13 @@ export async function runSync(
       const body = `${JSON.stringify(payload, null, 2)}\n`;
       const prev = await readUtf8OrNull(dest);
       const changed = prev !== body;
+      const changedFromExisting = prev !== null && changed;
       await mkdir(path.dirname(dest), { recursive: true });
       if (changed) {
         await writeFile(dest, body, "utf8");
       }
 
-      if (archive && changed) {
+      if (archive && changedFromExisting) {
         // .../ide/vscode/stable/version.json → .../ide/vscode/old/<stamp>__<rel>/version.json
         const channelDir = path.dirname(dest);
         const productRoot = path.dirname(channelDir);
