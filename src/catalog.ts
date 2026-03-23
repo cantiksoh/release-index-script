@@ -13,10 +13,19 @@ const wakatimePlugin = (repo: string): SyncTarget => ({
   file: `plugins/wakatime/${repo}/latest/version.json`,
 });
 
+const vscodeMarketplaceExt = (itemName: string): SyncTarget => ({
+  slug: `vscode-ext:${itemName}`,
+  file: `plugins/vscode/${itemName}/latest/version.json`,
+});
+
 export const SYNC_TARGETS: SyncTarget[] = [
   { slug: "vscode", file: "ide/vscode/stable/version.json" },
   { slug: "cursor", file: "ide/cursor/latest/version.json" },
   { slug: "antigravity", file: "ide/antigravity/latest/version.json" },
+
+  vscodeMarketplaceExt("dbaeumer.vscode-eslint"),
+  vscodeMarketplaceExt("esbenp.prettier-vscode"),
+  vscodeMarketplaceExt("eamodio.gitlens"),
 
   ...WAKATIME_KNOWN_PLUGINS.map((repo) => wakatimePlugin(repo)),
 

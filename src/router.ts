@@ -3,6 +3,7 @@ import { retryNetworkOnce } from "./core/decorators.js";
 import { fetchAntigravityReport, isAntigravitySlug } from "./providers/ag.js";
 import { fetchCursorReport, isCursorSlug } from "./providers/cursor.js";
 import { fetchVscodeAppReport, isVscodeAppSlug } from "./providers/vscode-app.js";
+import { fetchVscodeMarketplaceReport } from "./providers/mpx.js";
 import {
   fetchProduct,
   normalizeProductId,
@@ -11,6 +12,12 @@ import {
   parseWindows,
 } from "./providers/eol.js";
 import { fetchGithubReleaseReport, parseWakatimeGithubRef } from "./providers/wakatime.js";
+
+function parseVscodeMarketplaceExtSlug(raw: string): string | null {
+  const t = raw.trim();
+  const m = t.match(/^vscode-ext[:/](.+)$/i);
+  return m ? m[1] : null;
+}
 
 async function resolveReport(urlOrSlug: string): Promise<VersionReport> {
   if (isCursorSlug(urlOrSlug)) {
@@ -22,6 +29,12 @@ async function resolveReport(urlOrSlug: string): Promise<VersionReport> {
   if (isAntigravitySlug(urlOrSlug)) {
     return fetchAntigravityReport();
   }
+
+  const vscodeExt = parseVscodeMarketplaceExtSlug(urlOrSlug);
+  if (vscodeExt) {
+    return fetchVscodeMarketplaceReport(vscodeExt);
+  }
+
   const wakatimeRef = parseWakatimeGithubRef(urlOrSlug.trim());
   if (wakatimeRef) {
     return fetchGithubReleaseReport(wakatimeRef);
