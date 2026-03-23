@@ -90,6 +90,9 @@ jobs:
             git checkout -b master
           fi
 
+      - name: Migrate WakaTime plugin layout (safe copy)
+        run: node dist/migrate.js --repo data-repo
+
       - name: Write version JSON
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
