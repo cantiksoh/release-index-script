@@ -71,8 +71,32 @@ export function pickReleaseLabel(report: VersionReport): string {
   return "unknown";
 }
 
-function archiveFolderName(runStamp: string, report: VersionReport): string {
-  return `${runStamp}__${sanitizeFileSegment(pickReleaseLabel(report))}`;
+function channelFromTargetFile(tFile: string): string {
+  const parts = tFile.split("/").filter(Boolean);
+  return parts[parts.length - 2] ?? "";
+}
+
+function payloadForChannel(
+  report: VersionReport,
+  channel: string,
+): VersionReport[keyof VersionReport] | VersionReport | null {
+  const c = channel.toLowerCase();
+  if (c === "latest" || c === "stable") return report.latest;
+  if (c === "beta") return report.beta;
+  if (c === "lts") return report.lts;
+  return report;
+}
+
+function pickReleaseLabelForChannel(report: VersionReport, channel: string): string {
+  const c = channel.toLowerCase();
+  if (c === "latest" || c === "stable") return report.latest?.version ?? "unknown";
+  if (c === "beta") return report.beta?.version ?? "unknown";
+  if (c === "lts") return report.lts[0]?.version ?? "unknown";
+  return pickReleaseLabel(report);
+}
+
+function archiveFolderName(runStamp: string, report: VersionReport, channel: string): string {
+  return `${runStamp}__${sanitizeFileSegment(pickReleaseLabelForChannel(report, channel))}`;
 }
 
 export async function runSync(
@@ -89,7 +113,9 @@ export async function runSync(
     try {
       const report = await getVersionReport(t.slug);
       const dest = path.join(outDir, t.file);
-      const body = `${JSON.stringify(report, null, 2)}\n`;
+      const channel = channelFromTargetFile(t.file);
+      const payload = payloadForChannel(report, channel);
+      const body = `${JSON.stringify(payload, null, 2)}\n`;
       await mkdir(path.dirname(dest), { recursive: true });
       await writeFile(dest, body, "utf8");
 
@@ -100,7 +126,7 @@ export async function runSync(
         const archDir = path.join(
           productRoot,
           "old",
-          archiveFolderName(runStamp, report),
+          archiveFolderName(runStamp, report, channel),
         );
         await mkdir(archDir, { recursive: true });
         await writeFile(path.join(archDir, "version.json"), body, "utf8");
