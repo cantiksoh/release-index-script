@@ -91,7 +91,7 @@ jobs:
           fi
 
       - name: Migrate WakaTime plugin layout (safe copy)
-        run: node dist/migrate.js --repo data-repo
+        run: node dist/migrate.js --repo data-repo --delete-old
 
       - name: Write version JSON
         env:
