@@ -29,7 +29,7 @@ Last updated (UTC): **{{LAST_UPDATED_UTC}}**
 ## File examples
 
 - [VS Code stable](./ide/vscode/stable/version.json)
-- [WakaTime VS Code latest](./plugins/wakatime/vscode-wakatime/latest/version.json)
+- [WakaTime VS Code latest](./plugins/vscode/vscode-wakatime/latest/version.json)
 - [Go latest](./runtimes/go/latest/version.json)
 - [Linux latest](./platforms/linux/latest/version.json)
 - [Nginx latest](./tools/nginx/latest/version.json)
@@ -37,7 +37,7 @@ Last updated (UTC): **{{LAST_UPDATED_UTC}}**
 ## Raw URL examples
 
 - [VS Code stable raw](https://raw.githubusercontent.com/saiki-mbs/release-index/master/ide/vscode/stable/version.json)
-- [WakaTime VS Code raw](https://raw.githubusercontent.com/saiki-mbs/release-index/master/plugins/wakatime/vscode-wakatime/latest/version.json)
+- [WakaTime VS Code raw](https://raw.githubusercontent.com/saiki-mbs/release-index/master/plugins/vscode/vscode-wakatime/latest/version.json)
 
 ## History model
 

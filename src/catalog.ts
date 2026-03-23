@@ -8,9 +8,18 @@ export interface SyncTarget {
 }
 
 /** Channel folder before `version.json` (stable / latest / beta / lts later if we split). */
+function wakatimeIdeGroup(repo: string): string {
+  if (repo === "wakatime-mode") return "emacs";
+  const lower = repo.toLowerCase();
+  const idx = lower.indexOf("-wakatime");
+  if (idx > 0) return lower.slice(0, idx);
+  if (lower.endsWith("-wakatime")) return lower.slice(0, -"-wakatime".length);
+  return lower.split("-")[0] || "wakatime";
+}
+
 const wakatimePlugin = (repo: string): SyncTarget => ({
   slug: repo,
-  file: `plugins/wakatime/${repo}/latest/version.json`,
+  file: `plugins/${wakatimeIdeGroup(repo)}/${repo}/latest/version.json`,
 });
 
 const vscodeMarketplaceExt = (itemName: string): SyncTarget => ({
